@@ -1,0 +1,28 @@
+﻿# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+.vscode/
+.vs/
+*.exe
+*.dll
+*.obj
+*.log
+*.user
+*.suo
+*.pdb
+*.cache
+*.csproj.user
+*.dbmdl
+*.opendb
+*.VC.db
+.vscode/
+
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore publish files
+publish/
+
+# Ignore other system files
+.DS_Store
+Thumbs.db
