@@ -2,6 +2,7 @@
 using Media_API_project.Entities;
 using Media_API_project.Repository.Interface;
 using Media_API_project.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Media_API_project.Service.Implementation
 {
@@ -49,6 +50,47 @@ namespace Media_API_project.Service.Implementation
             await _mediaRepository.SaveChangesAsync();
 
             
+            return new MediaResponseDto
+            {
+                Id = media.Id,
+                FilePath = media.FilePath,
+                FileType = media.FileType,
+                UploadedAt = media.UploadedAt
+            };
+        }
+
+
+       
+        public async Task<MediaResponseDto> UploadAudioAsync(IFormFile audioFile)
+        {
+            if (audioFile == null || audioFile.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(audioFile));
+            }
+
+            var uploadsFolder = Path.Combine(_environment.WebRootPath, "media");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var filePath = Path.Combine(uploadsFolder, audioFile.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await audioFile.CopyToAsync(stream);
+            }
+
+            var media = new Media
+            {
+                Id = Guid.NewGuid(),
+                FilePath = filePath,
+                FileType = Path.GetExtension(audioFile.FileName).ToLower(),
+                UploadedAt = DateTime.UtcNow,
+            };
+
+            await _mediaRepository.AddMediaAsync(media);
+            await _mediaRepository.SaveChangesAsync();
+
             return new MediaResponseDto
             {
                 Id = media.Id,

@@ -45,6 +45,34 @@ namespace Media_API_project.Controllers
             return Ok(result);
         }
 
+        [HttpPost("upload-audio")]
+        public async Task<IActionResult> UploadAudio(IFormFile audioFile)
+        {
+            var result = await _mediaService.UploadAudioAsync(audioFile);
+            return Ok(new { Message = "Audio uploaded successfully" });
+        }
+
+        // Endpoint to download audio files
+/*        [HttpGet("download-audio/{fileName}")]
+        public IActionResult DownloadAudio(string fileName)
+        {
+            var filePath = Path.Combine(_env.WebRootPath, "media", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("Audio file not found.");
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+
+            return File(memory, "audio/wav", fileName);
+        }*/
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMedia(Guid id)
         {

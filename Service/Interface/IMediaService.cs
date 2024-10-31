@@ -5,6 +5,7 @@ namespace Media_API_project.Service.Interface
     public interface IMediaService
     {
         Task<MediaResponseDto> UploadMediaAsync(IFormFile file);
+        Task<MediaResponseDto> UploadAudioAsync(IFormFile audioFile);
         Task<MediaResponseDto> DownloadMediaAsync(Guid id);
         Task<IEnumerable<MediaResponseDto>> GetAllMediaAsync();
         Task DeleteMediaAsync(Guid id);
